@@ -10,12 +10,21 @@ TESTS_FAILED=0
 # Array to track port-forward PIDs for cleanup
 declare -a PF_PIDS=()
 
+# Array to store check results for display
+declare -a CHECK_RESULTS=()
+
 # Cleanup function to ensure port-forwards are killed
 cleanup_port_forwards() {
   local exit_code=$?
   if [[ ${#PF_PIDS[@]} -gt 0 ]]; then
     for pid in "${PF_PIDS[@]}"; do
       kill "$pid" 2>/dev/null || true
+    done
+  fi
+  # Clean up any remaining temp files
+  if [[ ${#CHECK_RESULTS[@]} -gt 0 ]]; then
+    for tmpfile in "${CHECK_RESULTS[@]}"; do
+      rm -f "$tmpfile" 2>/dev/null || true
     done
   fi
   exit "$exit_code"
@@ -148,62 +157,77 @@ check_app_reachable() {
   local expected=${6:-"Hostname: $svc_name"}
   local hint=${7:-""}
   local pf_pid=""
+  local tmpfile=$(mktemp)
+  local failed=0
 
-  print_test_section "Checking $label Environment"
+  # Redirect all output to temp file
+  {
+    print_test_section "Checking $label Environment"
 
-  # Check namespace exists
-  if ! check_namespace "$ns" "$hint"; then
+    # Check namespace exists
+    if ! check_namespace "$ns" "$hint"; then
+      failed=1
+    else
+      print_success_indent "Namespace '$ns' exists"
+    fi
+
+    if [[ $failed -eq 0 ]]; then
+      # Check service exists
+      if ! check_service "$svc_name" "$ns" "$hint"; then
+        failed=1
+      else
+        print_success_indent "Service '$svc_name' exists"
+      fi
+    fi
+
+    if [[ $failed -eq 0 ]]; then
+      # Setup port forwarding
+      if ! pf_pid=$(setup_port_forward "$svc_name" "$ns" "$local_port" "$remote_port"); then
+        failed=1
+      fi
+    fi
+
+    if [[ $failed -eq 0 ]]; then
+      # Test the endpoint
+      if ! test_http_endpoint "http://localhost:$local_port/healthz" "$expected" "$hint"; then
+        kill "$pf_pid" 2>/dev/null || true
+        failed=1
+      else
+        gum style --foreground 120 --bold "  ✅ $label environment is healthy!"
+      fi
+    fi
+  } > "$tmpfile" 2>&1
+
+  # Update counters
+  if [[ $failed -eq 1 ]]; then
     TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo ""
-    return 1
-  fi
-  print_success_indent "Namespace '$ns' exists"
-
-  # Check service exists
-  if ! check_service "$svc_name" "$ns" "$hint"; then
-    TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo ""
-    return 1
-  fi
-  print_success_indent "Service '$svc_name' exists"
-
-  # Setup port forwarding
-  if ! pf_pid=$(setup_port_forward "$svc_name" "$ns" "$local_port" "$remote_port"); then
-    TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo ""
-    return 1
+    CHECK_RESULTS+=("$tmpfile")
+  else
+    TESTS_PASSED=$((TESTS_PASSED + 1))
+    rm -f "$tmpfile"
   fi
 
-  # Test the endpoint
-  if ! test_http_endpoint "http://localhost:$local_port/healthz" "$expected" "$hint"; then
+  # Cleanup port-forward if it was started
+  if [[ -n "$pf_pid" ]]; then
     kill "$pf_pid" 2>/dev/null || true
-    TESTS_FAILED=$((TESTS_FAILED + 1))
-    echo ""
-    return 1
+    sleep 0.5
   fi
 
-  gum style --foreground 120 --bold "  ✅ $label environment is healthy!"
-  TESTS_PASSED=$((TESTS_PASSED + 1))
-
-  # Cleanup port-forward
-  kill "$pf_pid" 2>/dev/null || true
-  sleep 0.5
-  echo ""
+  return $failed
 }
 
 # Print summary of test results
-# Usage: print_summary [success_message] [next_steps...]
+# Usage: print_summary "objective" "docs_url" [success_message] [next_steps...]
 print_summary() {
-  local success_msg=${1:-"You've successfully completed this level! 🌟"}
-  shift || true
+  local objective=$1
+  local docs_url=$2
+  local success_msg=${3:-"You've successfully completed this level! 🌟"}
+  shift 3 || true
   local next_steps=("$@")
-
-  # Display summary header
-  print_header "Test Results Summary"
 
   echo ""
   if [[ $TESTS_FAILED -eq 0 ]]; then
-    gum style --foreground 120 --bold "🎉 SUCCESS! All checks passed ($TESTS_PASSED/$((TESTS_PASSED + TESTS_FAILED)))"
+    gum style --foreground 120 --bold "✅ All checks passed ($TESTS_PASSED/$((TESTS_PASSED + TESTS_FAILED)))"
     echo ""
     print_info "$success_msg"
     echo ""
@@ -217,20 +241,34 @@ print_summary() {
     fi
     exit 0
   else
+    # Display captured check outputs from temp files
+    for tmpfile in "${CHECK_RESULTS[@]}"; do
+      if [[ -f "$tmpfile" ]]; then
+        cat "$tmpfile"
+        echo ""
+        rm -f "$tmpfile"
+      fi
+    done
+
+    # Display summary header
+    print_header "Test Results Summary"
+    echo ""
     gum style --foreground 196 --bold "❌ FAILED: $TESTS_FAILED check(s) failed, $TESTS_PASSED passed"
     echo ""
-    print_info "Please review the errors above and try again."
-    print_info "Need help? Check the challenge documentation or review your configuration."
-    echo ""
 
-    # Offer to show ArgoCD applications
-    if command -v gum &> /dev/null; then
-      if gum confirm "Would you like to see the current ArgoCD applications?"; then
-        echo ""
-        gum style --foreground 212 "ArgoCD Applications:"
-        kubectl get applications -n argocd -o wide 2>/dev/null || print_error "Failed to retrieve applications"
-        echo ""
-      fi
+    # Display objective
+    if [[ -n "$objective" ]]; then
+      gum style --foreground 212 "🎯 Challenge Objective:"
+      echo ""
+      print_info "$objective"
+      echo ""
+    fi
+
+    # Display docs link
+    if [[ -n "$docs_url" ]]; then
+      gum style --foreground 212 "📖 For more information, see:"
+      print_info "   $docs_url"
+      echo ""
     fi
 
     exit 1

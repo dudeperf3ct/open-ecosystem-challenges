@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# output.sh - Shared library for styled output using Gum
-# This library provides consistent output formatting across all smoke test scripts
-
 # Print a styled header with multiple lines
 # Usage: print_header "Line 1" "Line 2" "Line 3"
 print_header() {
