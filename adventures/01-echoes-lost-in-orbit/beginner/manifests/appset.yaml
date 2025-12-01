@@ -6,24 +6,29 @@ metadata:
 spec:
   generators:
     - git:
-        repoURL: __REPO_URL__
+        repoURL: https://github.com/dudeperf3ct/open-ecosystem-challenges.git
         revision: HEAD
         directories:
           - path: adventures/01-echoes-lost-in-orbit/beginner/manifests/overlays/*
   template:
     metadata:
-      name: echo-server
+      name: echo-server-{{path.basename}}
       labels:
         app.kubernetes.io/managed-by: argocd
     spec:
       project: default
       source:
-        repoURL: __REPO_URL__
+        repoURL: https://github.com/dudeperf3ct/open-ecosystem-challenges.git
         targetRevision: HEAD
         path: adventures/01-echoes-lost-in-orbit/beginner/manifests/overlays/{{path.basename}}
       destination:
         server: https://kubernetes.default.svc
-        namespace: echo
+        namespace: echo-{{path.basename}}
       syncPolicy:
         syncOptions:
           - CreateNamespace=true
+        automated: # automated sync by default retries failed attempts 5 times with following delays between attempts ( 5s, 10s, 20s, 40s, 80s ); retry controlled using `retry` field.
+          enabled: true # Enables automated syncing of the application ( true by default ).
+          prune: true # Specifies if resources should be pruned during auto-syncing ( false by default ).
+          selfHeal: true # Specifies if partial app sync should be executed when resources are changed only in target Kubernetes cluster and no git change detected ( false by default ).
+          allowEmpty: false # Allows deleting all application resources during automatic syncing ( false by default ).
