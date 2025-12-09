@@ -9,3 +9,8 @@ nodes:
   - hostPort: 30100
     containerPort: 30100
     protocol: TCP
+    # Skipping port 30101 because the Argo rollouts dashboard is exposed as a port forward
+    # Prometheus
+  - hostPort: 30102
+    containerPort: 30102
+    protocol: TCP

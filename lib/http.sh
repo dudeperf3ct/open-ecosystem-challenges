@@ -18,7 +18,7 @@ test_http_endpoint() {
     print_hint "$hint"
 
     TESTS_FAILED=$((TESTS_FAILED + 1))
-    return
+    return 1
   fi
 
   if [[ "$response" != *"$expected"* ]]; then
@@ -28,9 +28,10 @@ test_http_endpoint() {
     print_hint "$hint"
 
     TESTS_FAILED=$((TESTS_FAILED + 1))
-    return
+    return 1
   fi
 
   print_info_indent "✓ App is reachable at $url and returned expected content"
   TESTS_PASSED=$((TESTS_PASSED + 1))
+  return 0
 }

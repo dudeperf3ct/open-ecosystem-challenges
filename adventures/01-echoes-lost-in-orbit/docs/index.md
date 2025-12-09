@@ -44,7 +44,14 @@ the ArgoCD configuration and restore proper multi-environment delivery.
 
 ### 🟡 Intermediate: The Silent Canary
 
-**Status:** 🚧 Coming on December 8
+**Status:** ✅ Available  
+**Topics:** Argo Rollouts, Progressive Delivery, Prometheus
+
+After fixing the communication outage, the Intergalactic Union welcomed a new species: the Zephyrians. The communications
+team attempted to deploy their language files using a progressive delivery system, but the rollout is failing. Your
+mission: debug the broken canary deployment and bring the Zephyrians' voices online.
+
+[**Start the Intermediate Challenge**](./intermediate.md){ .md-button .md-button--primary }
 
 ### 🔴 Expert: Echoes in the Dark
 

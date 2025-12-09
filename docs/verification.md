@@ -1,4 +1,4 @@
-# ✅ Challenge Verification
+# Verify Your Solution
 
 Each challenge includes a three-step verification process to help you validate and share your solution:
 

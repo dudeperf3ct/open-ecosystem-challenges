@@ -121,7 +121,9 @@ is_app_reachable() {
     return
   fi
 
-  test_http_endpoint "http://localhost:$local_port/$endpoint" "$expected" "$hint"
+  if ! test_http_endpoint "http://localhost:$local_port/$endpoint" "$expected" "$hint"; then
+    return
+  fi
 
   print_new_line
   print_success "✅ $label is healthy!"

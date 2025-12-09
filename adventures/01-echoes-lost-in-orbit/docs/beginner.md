@@ -68,7 +68,7 @@ Your Codespace comes pre-configured with the following tools to help you solve t
 - Open the **Ports** tab in the bottom panel
 - Find the Argo CD row (port `30100`) and click the forwarded address
 
-  ![Ports](./images/ports.png)
+  ![Ports](./images/ports-beginner.png)
 
 - Log in using:
   ```
@@ -122,5 +122,5 @@ For comprehensive validation and to officially claim completion:
 3. **Share your success** with
    the [community](https://community.open-ecosystem.com/t/adventure-01-echoes-lost-in-orbit-easy-broken-echoes/117)
 
-> 📖 **Need detailed verification instructions?** Check out the [Verification Guide](../../verification.md) for
+> 📖 **Need detailed verification instructions?** Check out the [Verification Guide](../../verification) for
 > step-by-step instructions on both smoke tests and GitHub Actions workflows.

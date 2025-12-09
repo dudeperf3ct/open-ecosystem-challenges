@@ -4,8 +4,10 @@ repo_url: "https://github.com/dynatrace-oss/open-ecosystem-challenges"
 docs_dir: docs
 nav:
   - 'Overview': index.md
+  - 'How to Play':
+      - start-a-challenge.md
+      - verification.md
   - 'Adventures': '*include ./adventures/*/mkdocs.yaml'
-  - 'Verification': verification.md
 plugins:
   - monorepo
   - search
