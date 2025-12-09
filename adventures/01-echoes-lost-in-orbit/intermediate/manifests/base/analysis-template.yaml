@@ -34,3 +34,8 @@ spec:
             # Check how many containers are ready (should be at least 1)
             # Look at kube_pod_container_status_* metrics
             # Test in Prometheus UI (port 30102 in the "Ports" tab of VS Code)
+            max by (namespace, pod)(
+              kube_pod_container_status_ready{
+                namespace="{{args.namespace}}",
+                pod=~"echo-server-.*"
+              }) or vector(0)
