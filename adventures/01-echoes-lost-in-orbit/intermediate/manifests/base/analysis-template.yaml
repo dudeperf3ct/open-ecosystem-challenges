@@ -14,7 +14,7 @@ spec:
       count: 1
       provider:
         prometheus:
-          address: http://prom-server.prometheus.svc.cluster.local
+          address: http://prometheus-server.prometheus.svc.cluster.local
           query: |
             # There should be no restarts
             sum(increase(kube_pod_container_status_restarts_total{
