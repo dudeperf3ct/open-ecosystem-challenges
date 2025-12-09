@@ -7,7 +7,7 @@ spec:
   generators:
     - git:
         repoURL: https://github.com/dudeperf3ct/open-ecosystem-challenges.git
-        revision: HEAD
+        revision: challenge-2-solution
         directories:
           - path: adventures/01-echoes-lost-in-orbit/intermediate/manifests/overlays/*
   template:
@@ -19,7 +19,7 @@ spec:
       project: default
       source:
         repoURL: https://github.com/dudeperf3ct/open-ecosystem-challenges.git
-        targetRevision: HEAD
+        targetRevision: challenge-2-solution
         path: adventures/01-echoes-lost-in-orbit/intermediate/manifests/overlays/{{ path.basename }}
       destination:
         server: https://kubernetes.default.svc
