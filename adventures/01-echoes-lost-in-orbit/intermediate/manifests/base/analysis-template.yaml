@@ -7,7 +7,7 @@ spec:
     - name: namespace
   metrics:
     - name: container-restarts
-      successCondition: result[0] > 0
+      successCondition: result[0] == 0
       failureLimit: 0
       inconclusiveLimit: 0
       consecutiveErrorLimit: 0
