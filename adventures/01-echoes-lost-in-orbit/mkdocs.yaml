@@ -4,3 +4,5 @@ nav:
   - Introduction: index.md
   - '🟢 Beginner': beginner.md
   - '🟡 Intermediate': intermediate.md
+  - 'Solutions':
+      - '🟢 Beginner': solutions/beginner.md
