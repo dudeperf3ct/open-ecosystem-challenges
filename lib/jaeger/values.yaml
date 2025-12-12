@@ -1,0 +1,12 @@
+storage:
+  type: memory
+
+allInOne:
+  enabled: true
+  resources:
+    requests:
+      memory: 128Mi
+      cpu: 256m
+    limits:
+      memory: 128Mi
+      cpu: 256m

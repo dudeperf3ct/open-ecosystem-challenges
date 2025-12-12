@@ -55,6 +55,12 @@ mission: debug the broken canary deployment and bring the Zephyrians' voices onl
 
 ### 🔴 Expert: Echoes in the Dark
 
-**Status:** 🚧 Coming on December 22
+**Status:** ✅ Available  
+**Topics:** Argo Rollouts, Progressive Delivery, Prometheus, Open Telemetry, Jaeger
 
+After fixing the Zephyrian communications, word of your progressive release mastery spread across the galaxy. The **Bytari**, a highly advanced species from the Andromeda sector, were impressed. 🌟
+
+They want to apply progressive delivery to their mission-critical service: **HotROD** (Hyperspace Operations & Transport - Rapid Orbital Dispatch), an interstellar ride-sharing service handling dispatch requests across thousands of star systems. Every millisecond of latency matters, and any error could strand travelers between dimensions.
+
+[**Start the Expert Challenge**](./expert.md){ .md-button .md-button--primary }
 

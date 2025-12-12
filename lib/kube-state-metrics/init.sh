@@ -10,7 +10,9 @@ kubectl create namespace kube-state-metrics
 
 echo "✨ Installing kube-state-metrics via Helm"
 helm install kube-state-metrics prometheus-community/kube-state-metrics \
+  --version 7.0.0 \
   --namespace kube-state-metrics \
+  --values lib/kube-state-metrics/values.yaml \
   --wait \
   --timeout 5m
 

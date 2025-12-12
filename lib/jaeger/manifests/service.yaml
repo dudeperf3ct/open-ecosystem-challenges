@@ -1,0 +1,16 @@
+# Create NodePort service to allow external access
+apiVersion: v1
+kind: Service
+metadata:
+  name: jaeger-query-nodeport
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      port: 16686
+      protocol: TCP
+      nodePort: 30103
+  selector:
+    app.kubernetes.io/component: all-in-one
+    app.kubernetes.io/instance: jaeger
+    app.kubernetes.io/name: jaeger

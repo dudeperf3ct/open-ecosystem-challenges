@@ -2,7 +2,7 @@
 
 # loader.sh - Main library loader
 # This script loads all shared libraries for smoke test scripts
-# Usage: source "$(dirname "${BASH_SOURCE[0]}")/../lib/loader.sh"
+# Usage: source "$(dirname "${BASH_SOURCE[0]}")/../lib/scripts/loader.sh"
 
 # Get the directory where this script is located
 LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -13,6 +13,8 @@ source "$LIB_DIR/output.sh"
 source "$LIB_DIR/prerequisites.sh"
 source "$LIB_DIR/http.sh"
 source "$LIB_DIR/kubernetes.sh"
+source "$LIB_DIR/prometheus.sh"
+source "$LIB_DIR/argo-rollouts.sh"
 
 # Set up cleanup trap for port-forwards
 trap cleanup_port_forwards EXIT INT TERM

@@ -20,18 +20,24 @@ headaches.
 
 Browse the available adventures and pick one that interests you:
 
-| Name                                                     | 🧠 Learnings                                                                                                                       |
-|----------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|
-| [Echoes Lost in Orbit](01-echoes-lost-in-orbit/index.md) | <ul><li>Debug GitOps flows</li><li>ApplicationSet pitfalls</li><li>Environment isolation</li><li>Sync, prune & self-heal</li></ul> |
+### [Echoes Lost in Orbit](01-echoes-lost-in-orbit/index.md)
 
-More coming soon!
+**Story:** Restore interstellar communications by fixing broken GitOps setups, progressive delivery systems, and observability pipelines across three galactic missions.
+
+| Level           | Name                              | 🧠 Key Learnings                                                                                                                                                                                                                                                     |
+|-----------------|-----------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 🟢 Beginner     | Broken Echoes                     | <ul><li>Debug GitOps flows with Argo CD</li><li>ApplicationSet templating & pitfalls</li><li>Environment isolation & namespaces</li><li>Sync policies: automated, prune & self-heal</li></ul>                                                                        |
+| 🟡 Intermediate | The Silent Canary                 | <ul><li>Progressive delivery with Argo Rollouts</li><li>Canary deployments & automated analysis</li><li>Write PromQL queries for health validation</li><li>Kube-state-metrics for deployment decisions</li></ul>                                                     |
+| 🔴 Expert       | Hyperspace Operations & Transport | <ul><li>Configure OpenTelemetry Collector pipelines</li><li>Spanmetrics connector (traces → metrics)</li><li>Detect "idle canaries" with traffic validation</li><li>Distributed tracing with Jaeger</li><li>Trace-derived metrics for progressive delivery</li></ul> |
+
+More adventures coming soon!
 
 ## 🎮 How It Works
 
 **Each level is independent** - start anywhere, complete in any order. Levels share a connected story but have their own:
 
 - Codespace configuration
-- Documentation and guides  
+- Documentation and guides
 - Validation tests
 
 **Levels:**

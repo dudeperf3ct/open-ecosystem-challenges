@@ -14,3 +14,7 @@ nodes:
   - hostPort: 30102
     containerPort: 30102
     protocol: TCP
+    # Jaeger
+  - hostPort: 30103
+    containerPort: 30103
+    protocol: TCP

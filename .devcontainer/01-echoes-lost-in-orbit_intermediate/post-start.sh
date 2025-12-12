@@ -21,4 +21,4 @@ git push
 argocd app get echo-server-staging --refresh
 argocd app get echo-server-prod --refresh
 
-features/argo-rollouts/connect.sh
+lib/argo-rollouts/connect.sh

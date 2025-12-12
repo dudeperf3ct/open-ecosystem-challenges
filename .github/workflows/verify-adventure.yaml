@@ -9,6 +9,7 @@ on:
         options:
           - 'Adventure 01 | 🟢 Beginner (Broken Echoes)'
           - 'Adventure 01 | 🟡 Intermediate (The Silent Canary)'
+          - 'Adventure 01 | 🔴 Expert (Hyperspace Operations and Transport)'
 jobs:
   easy:
     name: 'Adventure 01 | 🟢 Beginner (Broken Echoes)'
@@ -28,3 +29,12 @@ jobs:
       - uses: dynatrace-oss/open-ecosystem-challenge-verifier@main
         with:
           challenge: '01-echoes-lost-in-orbit_intermediate'
+  expert:
+    name: 'Adventure 01 | 🔴 Expert (Hyperspace Operations and Transport)'
+    if: ${{ inputs.challenge == 'Adventure 01 | 🔴 Expert (Hyperspace Operations and Transport)' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dynatrace-oss/open-ecosystem-challenge-verifier@main
+        with:
+          challenge: '01-echoes-lost-in-orbit_expert'

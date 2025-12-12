@@ -1,0 +1,55 @@
+server:
+  service:
+    type: NodePort
+    nodePort: 30102
+  global:
+    # Faster scraping and evaluation for quicker feedback
+    scrape_interval: 10s
+    scrape_timeout: 9s
+    evaluation_interval: 10s
+  extraScrapeConfigs: |
+    - job_name: 'kubernetes-pods'
+      kubernetes_sd_configs:
+        - role: pod
+          refresh_interval: 10s  # Discover new pods every 5s
+      relabel_configs:
+        # Only scrape pods with prometheus.io/scrape: 'true' annotation
+        - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+          action: keep
+          regex: true
+        # Use custom metrics path if prometheus.io/path annotation exists
+        - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+          action: replace
+          target_label: __metrics_path__
+          regex: (.+)
+        # Use custom port if prometheus.io/port annotation exists
+        - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+          action: replace
+          regex: ([^:]+)(?::\d+)?;(\d+)
+          replacement: $1:$2
+          target_label: __address__
+        # Add namespace label
+        - source_labels: [__meta_kubernetes_namespace]
+          action: replace
+          target_label: kubernetes_namespace
+        # Add pod name label
+        - source_labels: [__meta_kubernetes_pod_name]
+          action: replace
+          target_label: kubernetes_pod_name
+        # Add rollouts pod template hash label (for canary analysis)
+        - source_labels: [__meta_kubernetes_pod_label_rollouts_pod_template_hash]
+          action: replace
+          target_label: rollouts_pod_template_hash
+
+alertmanager:
+  enabled: false
+
+prometheus-node-exporter:
+  enabled: false
+
+prometheus-pushgateway:
+  enabled: false
+
+kube-state-metrics:
+  enabled: false
+

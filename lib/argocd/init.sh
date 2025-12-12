@@ -29,7 +29,7 @@ done
 
 echo "✨ Installing Argo CD"
 kubectl create namespace argocd
-kubectl apply -k features/argocd/manifests
+kubectl apply -k lib/argocd/manifests
 
 echo "✨ Installing Argo CD CLI"
 curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/download/v3.2.0/argocd-linux-amd64
