@@ -145,13 +145,14 @@ git push
 > `adventures/01-echoes-lost-in-orbit/expert/manifests/appset.yaml` to point to your branch.
 
 Argo CD will automatically sync your changes after some time. You can speed things up by refreshing the applications
-manually:
+manually. Depending on what you changed, use one of the following commands:
 
 ```bash
 argocd app get hotrod --refresh
+argocd app get otel --refresh
 ```
 
-After ArgoCD syncs your changes, trigger a new rollout:
+If you made changes to HotROD, trigger a new rollout after ArgoCD synced your changes:
 
 ```bash
 kubectl argo rollouts retry rollout hotrod -n hotrod

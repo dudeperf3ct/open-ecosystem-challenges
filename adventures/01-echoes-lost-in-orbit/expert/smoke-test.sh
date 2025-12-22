@@ -15,7 +15,7 @@ OBJECTIVE="By the end of this level, you should have:
 - Canary analysis validating deployments with 3 queries:
   - Traffic detection ensuring minimum request rate (>= 0.05 req/s) to the canary to prevent idle canaries that get promoted but never had real traffic. You can use the hotrod_requests_total metric to verify this
   - Error rate thresholds (< 5%)
-  - Latency thresholds for the 95th percentile (< 1000ms)
+  - Latency thresholds for the 95th percentile (< 1000ms)"
 
 DOCS_URL="https://dynatrace-oss.github.io/open-ecosystem-challenges/01-echoes-lost-in-orbit/expert"
 
@@ -35,7 +35,7 @@ TESTS_FAILED=0
 # Check if HotROD is deployed and reachable
 is_app_reachable "hotrod" "hotrod" "" 8080 8080 "HotROD" \
   "<title>" \
-  "Check the Argo Rollouts UI for details (select the 'hotrod' namespace in the top right) or run: kubectl argo rollouts get rollout hotrod -n hotrod"
+  "Check the Argo Rollouts UI for details (select the hotrod namespace in the top right) or run: kubectl argo rollouts get rollout hotrod -n hotrod"
 
 print_new_line
 
