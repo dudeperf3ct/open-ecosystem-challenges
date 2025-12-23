@@ -7,6 +7,12 @@ metadata:
 data:
   collector-config.yaml: |
     receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+          http:
+            endpoint: 0.0.0.0:4318
 
     connectors:
       spanmetrics:
