@@ -7,6 +7,31 @@ spec:
     - name: namespace
     - name: canary-hash
   metrics:
+    - name: canary-traffic-gte-0-05-rps
+      initialDelay: 60s
+      interval: 10s
+      count: 3
+      successCondition: result[0] >= 0.05
+      failureLimit: 2
+      inconclusiveLimit: 3
+      consecutiveErrorLimit: 2
+      provider:
+        prometheus:
+          address: http://prometheus-server.prometheus.svc.cluster.local
+          query: |
+            # # Canary request rate (req/s) derived from spanmetrics histogram count
+            # sum(
+            #   rate(traces_span_metrics_duration_milliseconds_count{
+            #     hotrod_namespace="{{args.namespace}}",
+            #     hotrod_pod_hash="{{args.canary-hash}}"
+            #   }[5m])
+            # )
+            sum(
+              rate(hotrod_requests_total{
+                namespace="{{args.namespace}}",
+                rollouts_pod_template_hash="{{args.canary-hash}}"
+              }[2m])
+            )
     - name: error-rate-lt-5-percent
       initialDelay: 60s
       interval: 10s
