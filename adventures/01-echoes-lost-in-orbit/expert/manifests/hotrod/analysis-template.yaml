@@ -19,12 +19,18 @@ spec:
         prometheus:
           address: http://prometheus-server.prometheus.svc.cluster.local
           query: |
-            # Canary request rate (req/s) derived from spanmetrics histogram count
+            # # Canary request rate (req/s) derived from spanmetrics histogram count
+            # sum(
+            #   rate(traces_span_metrics_duration_milliseconds_count{
+            #     hotrod_namespace="{{args.namespace}}",
+            #     hotrod_pod_hash="{{args.canary-hash}}"
+            #   }[5m])
+            # )
             sum(
-              rate(traces_span_metrics_duration_milliseconds_count{
-                hotrod_namespace="{{args.namespace}}",
-                hotrod_pod_hash="{{args.canary-hash}}"
-              }[5m])
+              rate(hotrod_requests_total{
+                namespace="{{args.namespace}}",
+                rollouts_pod_template_hash="{{args.canary-hash}}"
+              }[2m])
             )
     - name: error-rate-lt-5-percent
       initialDelay: 60s
